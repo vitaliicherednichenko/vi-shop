@@ -1,0 +1,47 @@
+<%= render 'spree/admin/shared/page_section_image', f: f %>
+
+  <div class="form-group">
+    <%= f.label :preferred_image_url, Spree.t('admin.page_builder.image_url') %>
+    <%= f.url_field :preferred_image_url, placeholder: 'https://example.com/image.jpg', data: { action: 'auto-submit#submit' }, class: "form-control" %>
+    <span class="text-muted form-text mt-2"><%= Spree.t('admin.page_builder.image_url_hint') %></span>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :preferred_title, Spree.t('admin.page_builder.title_default')%>
+    <%= f.text_field :preferred_title, data: { action: 'auto-submit#submit' }, class: "form-control" %>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :preferred_text, Spree.t('admin.page_builder.text_default') %>
+    <%= f.text_area :preferred_text, data: { action: 'auto-submit#submit' }, class: "form-control" %>
+  </div>
+
+    <%= f.fields_for :link do |lf| %>
+    <div class="form-group">
+      <%= lf.label :linkable_type, 'Link' %>
+      <%= lf.select :linkable_type, @page_section.allowed_linkable_types, { include_blank: false }, { class: 'custom-select mb-3', data: { action: 'auto-submit#submit' } } %>
+      <div id="linkable_type_dropdown">
+        <%= render 'spree/admin/page_links/linkable_type_dropdown', page_link: lf.object, form_name: 'page_section[link_attributes]' %>
+      </div>
+    </div>
+
+    <div class="custom-control custom-checkbox pb-2">
+      <%= lf.check_box :open_in_new_tab, class: 'custom-control-input', data: { action: 'auto-submit#submit' } %>
+      <%= lf.label :open_in_new_tab, class: 'custom-control-label' %>
+      <span class="text-muted form-text mt-2">Clicking on the image will send the user to the selected page/URL</span>
+    </div>
+  <% end %>
+  
+<% content_for(:design_tab) do %>
+
+  <div class="form-group">
+    <%= f.label :preferred_title_font_size, Spree.t('admin.page_builder.title_size') %>
+    <%= f.select :preferred_title_font_size, options_for_select([ ["Small", 'small'], ["Medium", 'medium'], ["Large", 'large'] ], @page_section.preferred_title_font_size ), {}, data: { action: 'auto-submit#submit' }, class: "custom-select" %>
+  </div>
+    <div class="form-group">
+    <%= f.label :preferred_text_font_size, Spree.t('admin.page_builder.text_size') %>
+    <%= f.select :preferred_text_font_size, options_for_select([ ["Small", 'small'], ["Medium", 'medium'], ["Large", 'large'] ], @page_section.preferred_text_font_size ), {}, data: { action: 'auto-submit#submit' }, class: "custom-select" %>
+  </div>
+
+  <%= render 'spree/admin/page_sections/fields/height', f: f %>
+<% end %>

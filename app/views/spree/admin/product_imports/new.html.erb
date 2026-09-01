@@ -1,0 +1,48 @@
+<% content_for :page_title do %>
+  <%= Spree.t('admin.product_import.view.title') %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <%= link_to Spree.t(:back), admin_products_path, class: 'btn btn-light' %>
+<% end %>
+
+<div class="card-lg">
+  <div class="card-body">
+    <%= form_with url: admin_product_imports_path, method: :post, local: true do |f| %>
+      <div class="form-group">
+        <%= label_tag :sheet_url, Spree.t('admin.product_import.view.sheet_url_label'), class: 'font-weight-bold' %>
+        <%= url_field_tag :sheet_url, params[:sheet_url],
+              class: 'form-control',
+              placeholder: 'https://docs.google.com/spreadsheets/d/.../edit?gid=0',
+              required: true %>
+        <small class="form-text text-muted">
+          <%= Spree.t('admin.product_import.view.sheet_url_hint') %>
+        </small>
+      </div>
+
+      <div class="alert alert-info" role="alert">
+        <strong><%= Spree.t('admin.product_import.view.columns_heading') %></strong>
+        <%= Spree.t('admin.product_import.view.columns_intro') %>
+        <ul class="mb-0 mt-2">
+          <li><code>name</code> — <%= Spree.t('admin.product_import.view.columns.name') %></li>
+          <li><code>price</code> — <%= Spree.t('admin.product_import.view.columns.price') %></li>
+          <li><code>sku</code> — <%= Spree.t('admin.product_import.view.columns.sku') %></li>
+          <li><code>description</code> — <%= Spree.t('admin.product_import.view.columns.description') %></li>
+          <li><code>image_url</code> — <%= Spree.t('admin.product_import.view.columns.image_url') %></li>
+          <li><code>video_url</code> — <%= Spree.t('admin.product_import.view.columns.video_url') %></li>
+          <li><code>card_size</code> — <%= Spree.t('admin.product_import.view.columns.card_size') %></li>
+          <li><code>taxons</code> — <%= Spree.t('admin.product_import.view.columns.taxons') %></li>
+          <li><code>properties</code> — <%= Spree.t('admin.product_import.view.columns.properties') %></li>
+          <li><code>property: X</code> — <%= Spree.t('admin.product_import.view.columns.property_x') %></li>
+        </ul>
+        <div class="mt-2">
+          <%= Spree.t('admin.product_import.view.matching_html').html_safe %>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit Spree.t('admin.product_import.view.submit'), class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="form-group">
+  <%= f.label :preferred_video_url, Spree.t('admin.page_builder.youtube_shorts.video_url') %>
+  <%= f.url_field :preferred_video_url, placeholder: 'https://www.youtube.com/shorts/VIDEO_ID', data: { action: 'auto-submit#submit' }, class: "form-control" %>
+  <span class="text-muted form-text mt-2"><%= Spree.t('admin.page_builder.youtube_shorts.video_url_hint') %></span>
+</div>
+
+<% video_id = youtube_video_id(f.object.preferred_video_url) %>
+<% if video_id.present? %>
+  <div class="form-group">
+    <img src="<%= youtube_short_thumbnail_url(f.object.preferred_video_url) %>" alt="YouTube Short preview" class="rounded" style="max-width: 160px;" />
+  </div>
+<% end %>
+
+<div class="form-group">
+  <%= f.label :preferred_title, Spree.t('admin.page_builder.title_default') %>
+  <%= f.text_field :preferred_title, data: { action: 'auto-submit#submit' }, class: "form-control" %>
+</div>

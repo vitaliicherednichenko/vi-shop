@@ -1,0 +1,52 @@
+<% blocks_count = section.blocks.size %>
+
+<div style="<%= section_styles(section) %>;">
+  <% if section.preferred_heading.present? %>
+    <% heading_size = case section.preferred_heading_size
+                      when 'small' then 'text-lg lg:text-xl'
+                      when 'medium' then 'text-xl lg:text-2xl'
+                      when 'large' then 'text-3xl lg:text-4xl'
+                      end %>
+    <h3 class="<%= heading_size %> mb-6 px-8 text-<%= section.preferred_heading_alignment %>">
+      <%= section.preferred_heading %>
+    </h3>
+  <% end %>
+
+  <div class="
+        image-grid grid gap-5 h-auto mx-auto
+        <%= blocks_count == 4 ? 'grid-cols-2 lg:grid-cols-4' : 'grid-cols-1 lg:grid-cols-3' %>
+      "
+       style="<%= section_styles(section) %>;">
+    <% section.blocks.each do |block| %>
+      <%= page_builder_link_to(block.link, title: block.link&.label,  target: (block.link&.open_in_new_tab ? '_blank' : nil)) do %>
+        <div class="h-auto flex flex-col items-center">
+          <%= page_block_image_tag(block, width: 320, class: "h-20 object-contain") %>
+
+          <div class="flex flex-col items-<%= block.preferred_text_align %> justify-<%= block.preferred_vertical_align %> p-8">
+            <% if block.preferred_title.present? %>
+              <% title_size = case block.preferred_title_font_size
+                              when 'small' then 'text-base'
+                              when 'medium' then 'text-lg'
+                              when 'large' then 'text-xl'
+                              end %>
+              <h4 class="<%= title_size %>">
+                <%= block.preferred_title %>
+              </h4>
+            <% end %>
+
+            <% if block.preferred_text.present? %>
+              <% text_size = case block.preferred_text_font_size
+                             when 'small' then 'text-base'
+                             when 'medium' then 'text-lg'
+                             when 'large' then 'text-xl'
+                             end %>
+              <p class="<%= text_size %>">
+                <%= block.preferred_text %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

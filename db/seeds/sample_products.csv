@@ -1,0 +1,6 @@
+name,price,sku,description,image_url,video_url,card_size,taxons,property:Calories,property:Weight
+Espresso Classico,4.50,COFFEE-ESP01,"Rich single-origin espresso with notes of dark chocolate and caramel. Served in a 30ml cup.",https://picsum.photos/seed/espresso/800/800,https://www.youtube.com/watch?v=dQw4w9WgXcQ,normal,Categories > Drinks > Coffee,5 kcal,30 ml
+Margherita Pizza,9.90,PIZZA-MARG1,"Classic Neapolitan pizza with San Marzano tomatoes, fresh mozzarella, basil and olive oil.",https://picsum.photos/seed/margherita/800/800,,wide,Categories > Food > Pizza,800 kcal,550 g
+Caesar Salad,7.25,SALAD-CAES1,"Crisp romaine, house Caesar dressing, parmesan shavings and garlic croutons.",https://picsum.photos/seed/caesar/800/800,,normal,Categories > Food > Salads,350 kcal,250 g
+Cheeseburger Deluxe,11.50,BURGER-DLX1,"200g beef patty, cheddar, caramelized onions, pickles and secret sauce on a brioche bun.","https://picsum.photos/seed/burger1/800/800,https://picsum.photos/seed/burger2/800/800",https://www.youtube.com/watch?v=aqz-KE-bpKQ,large,Categories > Food > Burgers; Categories > Bestsellers,950 kcal,320 g
+Tiramisu,5.75,DESSERT-TIR1,"Traditional Italian dessert with mascarpone, espresso-soaked ladyfingers and cocoa.",https://picsum.photos/seed/tiramisu/800/800,,normal,Categories > Desserts,450 kcal,150 g

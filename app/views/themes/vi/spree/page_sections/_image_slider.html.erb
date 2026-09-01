@@ -1,0 +1,107 @@
+<% blocks_count = section.blocks.size %>
+
+<div class="lg:px-8" style="<%= section_styles(section) %>;">
+  <% if section.preferred_heading.present? %>
+    <% heading_size = case section.preferred_heading_size
+                      when 'small' then 'text-lg lg:text-xl'
+                      when 'medium' then 'text-xl lg:text-2xl'
+                      when 'large' then 'text-3xl lg:text-4xl'
+                      end %>
+    <h3 class="<%= heading_size %> px-8 lg:px-0 mb-6 text-<%= section.preferred_heading_alignment %>">
+      <%= section.preferred_heading %>
+    </h3>
+  <% end %>
+
+  <div class="image-grid-slider image-grid-slider--cosmic swiper w-full cursor-grab" data-controller="carousel"
+       data-carousel-options-value='<%= raw({
+                                              slidesPerView: 1,
+                                              spaceBetween: 0,
+                                              centeredSlides: true,
+                                              loop: blocks_count > 1,
+                                              speed: 1000,
+                                              grabCursor: true,
+                                              effect: "fade",
+                                              fadeEffect: { crossFade: true },
+                                              autoplay: {
+                                                delay: 5000,
+                                                disableOnInteraction: false,
+                                                pauseOnMouseEnter: true
+                                              },
+                                              navigation: {
+                                                nextEl: ".swiper-button-next",
+                                                prevEl: ".swiper-button-prev"
+                                              },
+                                              pagination: {
+                                                el: ".swiper-pagination",
+                                                type: "fraction"
+                                              }
+                                            }.to_json) %>'>
+    <div class="swiper-wrapper">
+      <% section.blocks.each do |block| %>
+        <div class="swiper-slide">
+          <%= page_builder_link_to(block.link, title: block.link&.label, target: (block.link&.open_in_new_tab ? '_blank' : nil)) do %>
+            <div class="image-grid-slider--slide custom-height relative w-full overflow-hidden"
+                 style="--desktop-height: <%= block.preferred_height %>px; --mobile-height: <%= block.preferred_mobile_height %>px;">
+              <div class="image-grid-slider--image-wrapper absolute inset-0">
+                <%= page_block_image_tag(block, width: 1500, class: "w-full h-full object-cover") %>
+              </div>
+
+              <%# Otherworldly overlays: nebula glow, twinkling stars, vignette %>
+              <div class="image-grid-slider__nebula absolute inset-0" aria-hidden="true"></div>
+              <div class="image-grid-slider__stars absolute inset-0" aria-hidden="true"></div>
+              <div class="image-grid-slider__stars image-grid-slider__stars--far absolute inset-0" aria-hidden="true"></div>
+              <div class="image-grid-slider__vignette absolute inset-0" aria-hidden="true"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+
+              <div class="image-grid-slider--content absolute bottom-0 left-0 right-0 flex flex-col items-<%= block.preferred_text_align %> justify-end gap-3 p-8 lg:p-16 text-white text-<%= block.preferred_text_align %>">
+                <% if block.preferred_title.present? %>
+                  <% title_size = case block.preferred_title_font_size
+                                  when 'small' then 'text-xl lg:text-2xl'
+                                  when 'medium' then 'text-2xl lg:text-3xl'
+                                  when 'large' then 'text-3xl lg:text-5xl'
+                                  end %>
+                  <h4 class="image-grid-slider--title font-medium <%= title_size %>">
+                    <%= block.preferred_title %>
+                  </h4>
+                <% end %>
+
+                <% if block.preferred_text.present? %>
+                  <% text_size = case block.preferred_text_font_size
+                                 when 'small' then 'text-base'
+                                 when 'medium' then 'text-lg'
+                                 when 'large' then 'text-xl'
+                                 end %>
+                  <p class="image-grid-slider--text max-w-2xl <%= text_size %>">
+                    <%= block.preferred_text %>
+                  </p>
+                <% end %>
+
+                <% if block.link&.label.present? %>
+                  <span class="image-grid-slider--button btn-primary btn-icon mt-2 inline-flex w-fit">
+                    <%= block.link.label %>
+                    <%= render 'spree/shared/icons/chevron_right' %>
+                  </span>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <% if blocks_count > 1 %>
+      <div class="image-grid-slider__hud absolute bottom-6 left-6 lg:left-16 z-20 flex items-center gap-3 pointer-events-none">
+        <span class="image-grid-slider__orb" aria-hidden="true"></span>
+        <div class="swiper-pagination image-grid-slider__counter"></div>
+      </div>
+
+      <button class="swiper-button-prev !text-gray-700 after:!text-[16px] after:!font-light absolute p-2 bg-white rounded-full z-10 left-0 ml-2 lg:ml-4 size-14 top-1/2 -translate-y-1/2">
+        <%= render 'spree/shared/icons/chevron' %>
+      </button>
+      <button class="swiper-button-next !text-gray-700 after:!text-[16px] after:!font-light absolute p-2 bg-white rounded-full z-10 right-0 mr-2 lg:mr-4 size-14 top-1/2 -translate-y-1/2">
+        <%= render 'spree/shared/icons/chevron_right' %>
+      </button>
+    <% end %>
+  </div>
+</div>
+

@@ -1,0 +1,50 @@
+<div class="lg:px-8" style="<%= section_styles(section) %>;">
+  <% if section.preferred_heading.present? %>
+    <% heading_size = case section.preferred_heading_size
+                      when 'small' then 'text-lg lg:text-xl'
+                      when 'medium' then 'text-xl lg:text-2xl'
+                      when 'large' then 'text-3xl lg:text-4xl'
+                      end %>
+    <h3 class="<%= heading_size %> mb-6 px-8 lg:px-0 text-<%= section.preferred_heading_alignment %>">
+      <%= section.preferred_heading %>
+    </h3>
+  <% end %>
+
+  <% shorts = section.blocks.select { |block| youtube_video_id(block.preferred_video_url).present? } %>
+
+  <% if shorts.any? %>
+    <div class="swiper w-full" data-controller="carousel"
+         data-carousel-options-value='<%= raw({
+                                                slidesPerView: "auto",
+                                                slidesPerGroup: 1,
+                                                spaceBetween: 16,
+                                                pagination: {
+                                                  el: ".swiper-pagination",
+                                                  clickable: true
+                                                }
+                                              }.to_json) %>'>
+      <div class="swiper-wrapper">
+        <% shorts.each do |block| %>
+          <div class="swiper-slide !w-[280px] flex-shrink-0">
+            <div class="relative shadow overflow-hidden rounded-xl aspect-[9/16] w-[280px] bg-black">
+              <iframe
+                src="<%= youtube_embed_url(block.preferred_video_url) %>"
+                class="absolute inset-0 w-full h-full"
+                loading="lazy"
+                title="<%= block.preferred_title.presence || 'YouTube Short' %>"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen></iframe>
+            </div>
+            <% if block.preferred_title.present? %>
+              <p class="mt-2 text-base px-1"><%= block.preferred_title %></p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="swiper-pagination !relative mt-8 flex items-center justify-center mx-auto"></div>
+    </div>
+  <% end %>
+</div>

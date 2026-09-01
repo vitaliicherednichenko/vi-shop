@@ -1,0 +1,121 @@
+<div class="lg:px-8" style="<%= section_styles(section) %>;" data-controller="slider-filter">
+  <div class="px-8 lg:px-0 flex flex-col lg:flex-row lg:items-center justify-between mb-4">
+    <% if section.preferred_heading.present? %>
+      <% heading_size = case section.preferred_heading_size
+                        when 'small' then 'text-base'
+                        when 'medium' then 'text-lg lg:text-2xl'
+                        when 'large' then 'text-3xl lg:text-3xl'
+                        end %>
+      <h3 class="<%= heading_size %> mb-2 lg:mb-6">
+        <%= section.preferred_heading %>
+      </h3>
+    <% end %>
+
+    <div class="flex gap-2" >
+      <% section.blocks.each do |block| %>
+        <% if block.type == "Spree::PageBlocks::Buttons" && block.link.present? %>
+          <button
+            type="button"
+            class="btn-<%= block.preferred_button_style_1 %>"
+            data-action="click->slider-filter#filter"
+            data-filter-value="<%= block.link.label.parameterize %>"
+            style="font-size:12px; padding: 8px 16px; border-radius: 50px">
+            <%= block.link.label %>
+          </button>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- DESKTOP -->
+  <div class="hidden lg:block">
+    <div class="swiper w-full" data-controller=""
+         data-carousel-options-value='<%= raw({
+                                                slidesPerView: "auto",
+                                                freeMode: true,
+                                                slidesPerGroup: 1,
+                                                spaceBetween: 16,
+                                                navigation: {
+                                                  nextEl: ".swiper-button-next",
+                                                  prevEl: ".swiper-button-prev"
+                                                }
+                                              }.to_json) %>'>
+      <div class="swiper-wrapper">
+        <% section.blocks.select { |b| b.is_a?(Spree::PageBlocks::ImageCollectionSlider) }.each do |block| %>
+          <div class="swiper-slide flex-shrink-0"
+               data-slider-filter-target="slide"
+               data-category="<%= block.link.label.parameterize %>">
+            <div class="relative shadow overflow-hidden" style="height: <%= block.preferred_height %>px;">
+              <%= page_block_image_tag(block, width: 1500, class: "w-full h-full object-cover") %>
+              <% if block.preferred_title.present? || block.preferred_text.present? %>
+                <div class="absolute bottom-0 left-0 w-full p-2">
+                  <% if block.preferred_title.present? %>
+                    <% title_size = case block.preferred_title_font_size
+                                    when 'small' then 'text-base'
+                                    when 'medium' then 'text-lg'
+                                    when 'large' then 'text-xl'
+                                    end %>
+                    <h4 class="<%= title_size %>">
+                      <%= block.preferred_title %>
+                    </h4>
+                  <% end %>
+                  <% if block.preferred_text.present? %>
+                    <% text_size = case block.preferred_text_font_size
+                                   when 'small' then 'text-xl'
+                                   when 'medium' then 'text-2xl'
+                                   when 'large' then 'text-3xl'
+                                   end %>
+                    <p class="<%= text_size %>">
+                      <%= block.preferred_text %>
+                    </p>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE -->
+  <div class="lg:hidden">
+    <div class="swiper w-full">
+      <div class="swiper-wrapper">
+        <% section.blocks.select { |b| b.is_a?(Spree::PageBlocks::ImageCollectionSlider) }.each do |block| %>
+          <div class="swiper-slide flex-shrink-0"
+               data-slider-filter-target="slide"
+               data-category="<%= block.link.label.parameterize %>">
+            <div class="relative shadow overflow-hidden" style="height: <%= block.preferred_mobile_height %>px;">
+              <%= page_block_image_tag(block, width: 420, class: "w-full h-full object-cover") %>
+              <% if block.preferred_title.present? || block.preferred_text.present? %>
+                <div class="absolute bottom-0 left-0 w-full p-2">
+                  <% if block.preferred_title.present? %>
+                    <% title_size = case block.preferred_title_font_size
+                                    when 'small' then 'text-base'
+                                    when 'medium' then 'text-lg'
+                                    when 'large' then 'text-xl'
+                                    end %>
+                    <h4 class="<%= title_size %>">
+                      <%= block.preferred_title %>
+                    </h4>
+                  <% end %>
+                  <% if block.preferred_text.present? %>
+                    <% text_size = case block.preferred_text_font_size
+                                   when 'small' then 'text-base'
+                                   when 'medium' then 'text-lg'
+                                   when 'large' then 'text-xl'
+                                   end %>
+                    <p class="<%= text_size %>">
+                      <%= block.preferred_text %>
+                    </p>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

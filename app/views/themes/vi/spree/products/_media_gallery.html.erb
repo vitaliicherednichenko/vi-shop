@@ -1,0 +1,121 @@
+<% desktop ||= false %>
+<% video_url ||= nil %>
+
+<% cache [*spree_base_cache_scope.call(product), images, desktop, video_url].compact do %>
+  <% if desktop == true %>
+    <div
+      class="media-gallery w-full h-full media-gallery-desktop"
+      id="media-gallery-<%= product.id %>-desktop"
+      data-controller="lightbox pdp-desktop-gallery">
+      <div class="grid grid-cols-[6.5rem,_1fr] grid-rows-1 gap-2 w-full media-gallery-desktop__wrapper">
+        <div class="flex flex-col h-full w-full aspect-1 overflow-hidden">
+          <%= button_tag class: "w-full bg-background py-2 flex justify-center items-center disabled:opacity-50 media-gallery-desktop-arrow", data: { pdp_desktop_gallery_target: "prevArrow" } do %>
+            <span class="rotate-180">
+              <%= render 'spree/shared/icons/chevron_down' %>
+            </span>
+          <% end %>
+          <div class="swiper h-full w-full block" data-pdp-desktop-gallery-target="imagesThumbsSlider">
+            <div class="swiper-wrapper w-full h-full block">
+              <% images.each do |image| %>
+                <div class="swiper-slide !h-min cursor-pointer w-full">
+                  <div
+                    class="relative aspect-1 w-full block "
+                    id="thumb-desktop-product-image-<%= gallery_image_dom_id(image) %>"
+                    data-turbo-permanent>
+                    <%= gallery_image_tag(image, width: 100, height: 100, alt: gallery_image_alt(image, product), class: 'w-full h-full') %>
+                  </div>
+                </div>
+              <% end %>
+              <% if video_url.present? %>
+                <div class="swiper-slide !h-min cursor-pointer w-full">
+                  <div class="relative aspect-1 w-full flex items-center justify-center bg-black/90 overflow-hidden" id="thumb-desktop-product-video" data-turbo-permanent>
+                    <% video_thumb = video_thumbnail_url(video_url) %>
+                    <% if video_thumb %>
+                      <%= image_tag video_thumb, alt: '', loading: :lazy, class: 'w-full h-full object-cover' %>
+                    <% end %>
+                    <span class="absolute inset-0 flex items-center justify-center">
+                      <span class="flex items-center justify-center w-12 h-12 rounded-full bg-black/50">
+                        <%= render 'spree/products/video_play_icon' %>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <%= button_tag class: "w-full bg-background py-2 flex justify-center items-center disabled:opacity-50 media-gallery-desktop-arrow", data: { pdp_desktop_gallery_target: "nextArrow" } do %>
+            <%= render 'spree/shared/icons/chevron_down' %>
+          <% end %>
+        </div>
+        <div data-pdp-desktop-gallery-target="imagesSlider" class="overflow-hidden swiper relative w-full h-min">
+          <div class="swiper-wrapper w-full h-min">
+            <% images.each do |image| %>
+              <div class="swiper-slide w-full">
+                <div
+                  class="product-image relative w-full aspect-1"
+                  id="main-desktop-product-image-<%= gallery_image_dom_id(image) %>"
+                  data-turbo-permanent>
+                  <%= link_to gallery_image_zoom_src(image, width: 1000, height: 1000), data: { pswp_width: "2000", pswp_height: "2000" } do %>
+                    <div class="zoom-icon hidden absolute bottom-2 right-2 p-4 bg-background rounded-full opacity-75 hover:opacity-100">
+                      <%= render 'spree/shared/icons/zoom' %>
+                    </div>
+                    <%= gallery_image_tag(image, width: 1000, height: 1000, alt: gallery_image_alt(image, product), class: 'w-full h-full') %>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+            <% if video_url.present? %>
+              <div class="swiper-slide w-full">
+                <div class="product-image relative w-full aspect-1 flex items-center justify-center bg-black" id="main-desktop-product-video" data-turbo-permanent>
+                  <div class="w-full"><%= render 'spree/products/video', product: product %></div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <%= render 'spree/products/label', product: product %>
+          <div data-pdp-desktop-gallery-target="imagesSliderPagination" class="swiper-pagination"></div>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <!-- media gallery for mobile -->
+    <% if images.any? || video_url.present? %>
+      <div
+        id="media-gallery-<%= product.id %>-mobile"
+        data-controller="lightbox carousel"
+        class="media-gallery swiper-container relative overflow-hidden"
+        data-carousel-options-value='{
+        "slidesPerView": 1,
+        "centeredSlides": true,
+        "spaceBetween": 10,
+        "grabCursor": true
+      }'>
+        <div class="swiper-wrapper">
+          <% images.each do |image| %>
+            <div class="swiper-slide aspect-1" id="swiper-slide-<%= gallery_image_dom_id(image) %>">
+              <%= link_to gallery_image_zoom_src(image, width: 2000, height: 2000), class: "absolute top-2 right-2 p-2 bg-background rounded-full opacity-75 hover:opacity-100", data: { pswp_width: "2000", pswp_height: "2000" } do %>
+                <%= render 'spree/shared/icons/zoom' %>
+              <% end %>
+              <%= render 'spree/products/label', product: product, mobile_pdp: true %>
+              <%= gallery_image_tag(image, width: 360, height: 360, alt: gallery_image_alt(image, product), class: 'h-full w-full object-cover object-center', style: 'min-height: 358px') %>
+            </div>
+          <% end %>
+          <% if video_url.present? %>
+            <div class="swiper-slide aspect-1 flex items-center justify-center bg-black" id="swiper-slide-video">
+              <div class="w-full"><%= render 'spree/products/video', product: product %></div>
+            </div>
+          <% end %>
+        </div>
+        <% if (images.length + (video_url.present? ? 1 : 0)) > 1 %>
+          <div class="swiper-pagination-product-<%= product.id %> mt-3 items-center flex mx-auto align-center justify-center" data-carousel-target="pagination"></div>
+        <% end %>
+      </div>
+      <div id='pinch-to-zoom' class='fixed top-0 left-0 p-4 bg-background z-50 flex justify-center items-center flex-col'>
+        <div class='w-14 h-14'><%= render 'spree/shared/icons/pinch' %></div>
+        <div class='text-sm uppercase pt-4 px-5 text-center !leading-tight'>
+          <%= Spree.t("storefront.products.pinch_to_zoom_html") %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

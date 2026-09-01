@@ -1,0 +1,21 @@
+<% content_for(:design_tab) do %>
+
+  <%= label_tag :background_image %>
+  <br />
+
+  <%= render 'spree/admin/shared/page_section_image', f: f %>
+
+  <div class="form-group mt-3">
+    <%= f.label :preferred_image_url, Spree.t('admin.page_builder.image_url') %>
+    <%= f.url_field :preferred_image_url, placeholder: 'https://example.com/image.jpg', data: { action: 'auto-submit#submit' }, class: "form-control" %>
+    <span class="text-muted form-text mt-2"><%= Spree.t('admin.page_builder.image_url_hint') %></span>
+  </div>
+
+  <br />
+
+  <%= render 'spree/admin/page_builder/range_input',
+    f: f, field: :preferred_overlay_transparency, min: 1, max: 100, unit: '%'
+  %>
+
+  <hr />
+<% end %>

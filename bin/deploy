@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+#
+# One-command Kamal deploy for menu-spree.
+#
+# Loads secrets, runs `kamal deploy`, then prints container status.
+# Secrets come from two gitignored files (never committed):
+#   .env        -> KAMAL_REGISTRY_PASSWORD, RAILS_MASTER_KEY (also used by local dev)
+#   .env.deploy -> DATABASE_URL (production DB on the kamal docker network)
+#
+# DATABASE_URL lives in .env.deploy (NOT .env) on purpose: dotenv-rails auto-loads
+# .env in development, and the production value (host: menu-spree-db) only resolves
+# on the server — putting it in .env would break local `bin/dev`.
+#
+# Usage: bin/deploy [extra kamal args...]   e.g.  bin/deploy -r web
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+[ -f .env ]        || { echo "ABORT: .env not found"; exit 1; }
+[ -f .env.deploy ] || { echo "ABORT: .env.deploy not found (holds DATABASE_URL)"; exit 1; }
+
+set -a
+# shellcheck disable=SC1091
+source .env
+# shellcheck disable=SC1091
+source .env.deploy
+set +a
+
+[ -n "${KAMAL_REGISTRY_PASSWORD:-}" ] || { echo "ABORT: KAMAL_REGISTRY_PASSWORD empty"; exit 1; }
+[ -n "${RAILS_MASTER_KEY:-}" ]        || { echo "ABORT: RAILS_MASTER_KEY empty"; exit 1; }
+case "${DATABASE_URL:-}" in
+  *@menu-spree-db:*/vi_shop_production) ;;
+  "") echo "ABORT: DATABASE_URL empty (check .env.deploy)"; exit 1 ;;
+  *)  echo "ABORT: DATABASE_URL does not point at menu-spree-db/vi_shop_production — refusing"; exit 1 ;;
+esac
+
+echo "Secrets OK. Running kamal deploy..."
+kamal deploy "$@"
+
+echo
+echo "Deployed. Container status:"
+ssh -o ConnectTimeout=10 user@46.225.112.132 \
+  "docker ps --filter name=menu-spree --format '{{.Names}}\t{{.Status}}'"

@@ -1,0 +1,73 @@
+en:
+  spree:
+    admin:
+      products:
+        video:
+          title: Video
+          video_url: Video URL
+          url_help: Enter a YouTube, Vimeo, or TikTok URL to display a video on the product page
+          preview: Preview
+      page_builder:
+        image: Image
+        image_url: Image URL
+        image_url_hint: Paste a direct link to the source image (e.g. https://example.com/image.jpg)
+        image_url_overrides_upload: If both are set, the Image URL takes precedence over the uploaded image.
+        youtube_shorts:
+          video_url: YouTube Short URL
+          video_url_hint: Paste a YouTube Shorts link (e.g. https://www.youtube.com/shorts/VIDEO_ID)
+      product_import:
+        flash:
+          blank_url: Please provide a Google Sheet link.
+          queued: Import started in the background. The result will be sent to Telegram.
+        telegram:
+          finished: "✅ Products import finished — %{summary}"
+          invalid: "⚠️ Products import was not run: %{message}"
+          failed: "❌ Products import failed with an error: %{message}"
+          errors_heading: "Errors:"
+        summary: "created: %{created}, updated: %{updated}, skipped: %{skipped}, errors: %{errors}"
+        row_error: "Row %{row} (%{name}): %{message}"
+        errors:
+          invalid_url: This does not look like a Google Sheets link.
+          download_failed: Could not download the sheet (HTTP %{status}). Make sure link sharing is enabled.
+          not_public: The sheet is not publicly accessible. Enable "Anyone with the link — Viewer".
+        button: Import from Google Sheets
+        view:
+          title: Import products from Google Sheets
+          sheet_url_label: Google Sheet link
+          sheet_url_hint: The sheet must be shared as "anyone with the link — Viewer". The import runs in the background and the result is sent to Telegram.
+          columns_heading: Expected columns
+          columns_intro: "(first row = headers, case-insensitive). Only name is required:"
+          columns:
+            name: product name (required)
+            price: "price (defaults to 1 when blank)"
+            sku: "SKU, the update key (auto-generated when blank)"
+            description: description
+            image_url: "image link (several allowed, comma-separated)"
+            video_url: video link
+            card_size: normal / wide / large
+            taxons: "categories, e.g. Categories > Food > Pizza; several paths separated by ; (created automatically)"
+            properties: "properties in one cell: Key: Value; Key2: Value2"
+            property_x: "any column with this header sets property X (e.g. property: Calories)"
+          matching_html: Products are matched by <code>sku</code>, then by <code>name</code> — existing ones are <strong>updated</strong> (re-importing the same link = update).
+          submit: Start import
+    page_sections:
+      fullscreen_banner:
+        heading_default: This is the default fullscreen banner heading
+        text_default: This is the default fullscreen banner text
+      collection_banner:
+        heading_default: This is the default heading
+      image_grid:
+        heading_default: This is the default heading
+        title_default: This is the default title
+        text_default: This is the default text
+      image_slider:
+        heading_default: This is the default heading
+        title_default: This is the default title
+      image_collection_slider:
+        title_default: This is the default title
+        text_default: This is the default text
+      risk_reducers:
+        heading_default: This is the default heading
+        title_default: This is the default title
+      youtube_shorts_slider:
+        heading_default: YouTube Shorts

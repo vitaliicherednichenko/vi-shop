@@ -1,0 +1,99 @@
+<div class="lg:px-8" style="<%= section_styles(section) %>;">
+  <% if section.preferred_heading.present? %>
+    <% heading_size = case section.preferred_heading_size
+                      when 'small' then 'text-lg lg:text-xl'
+                      when 'medium' then 'text-xl lg:text-2xl'
+                      when 'large' then 'text-3xl lg:text-4xl'
+                      end %>
+    <h3 class="<%= heading_size %> mb-6 px-8 lg:px-0 text-<%= section.preferred_heading_alignment %>">
+      <%= section.preferred_heading %>
+    </h3>
+  <% end %>
+
+  <div class="hidden lg:block">
+    <div class="swiper w-full" data-controller="carousel" 
+        data-carousel-options-value='<%= raw({
+          slidesPerView: "auto",
+          freeMode: true,
+          slidesPerGroup: 1,
+          spaceBetween: 16,
+          navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev"
+          }
+        }.to_json) %>'>
+      <div class="swiper-wrapper">
+        <% section.blocks.each do |block| %>
+          <div class="swiper-slide !w-[420px] flex-shrink-0">
+            <%= page_builder_link_to(block.link, title: block.link&.label,  target: (block.link&.open_in_new_tab ? '_blank' : nil)) do %>
+              <div class="relative shadow overflow-hidden aspect-[420/526] w-[420px]">
+                <%= page_block_image_tag(block, width: 420, class: "w-full h-full object-cover") %>
+                <div class="absolute bottom-0 left-0 right-0 px-3 pb-6">
+                  <% if block.preferred_title.present? %>
+                    <% title_size = case block.preferred_title_font_size 
+                                      when 'small' then 'text-lg'
+                                      when 'medium' then 'text-xl'
+                                      when 'large' then 'text-2xl'
+                                      end %>
+                    <h4 class="<%= title_size %>">
+                      <%= block.preferred_title %>
+                    </h4>
+                  <% end %>
+                  <% if block.preferred_text.present? %>
+                    <% text_size = case block.preferred_text_font_size 
+                                      when 'small' then 'text-base'
+                                      when 'medium' then 'text-lg'
+                                      when 'large' then 'text-xl'
+                                      end %>
+                    <p class="<%= text_size %>">
+                      <%= block.preferred_text %>
+                    </p>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+  
+      <button class="swiper-button-prev !text-gray-700 after:!text-[16px] after:!font-light absolute p-2 bg-white rounded-full z-10 left-0 ml-2 size-14">
+        <%= render 'spree/shared/icons/chevron' %>
+      </button>
+      <button class="swiper-button-next !text-gray-700 after:!text-[16px] after:!font-light absolute p-2 bg-white rounded-full z-10 right-0 mr-2 size-14">
+        <%= render 'spree/shared/icons/chevron_right' %>
+      </button>
+    </div>
+	</div>	
+
+	<div class="grid grid-cols-2 gap-2 lg:hidden">
+    <% section.blocks.each do |block| %>
+      <%= page_builder_link_to(block.link, title: block.link&.label,  target: (block.link&.open_in_new_tab ? '_blank' : nil)) do %>
+        <div class="relative shadow overflow-hidden aspect-[420/526]">
+          <%= page_block_image_tag(block, width: 420, class: "w-full h-full object-cover") %>
+          <div class="absolute bottom-0 left-0 right-0 p-3">
+            <% if block.preferred_title.present? %>
+              <% title_size = case block.preferred_title_font_size 
+                                when 'small' then 'text-lg'
+                                when 'medium' then 'text-xl'
+                                when 'large' then 'text-2xl'
+                                end %>
+              <h4 class="<%= title_size %>">
+                <%= block.preferred_title %>
+              </h4>
+            <% end %>
+            <% if block.preferred_text.present? %>
+              <% text_size = case block.preferred_text_font_size 
+                                when 'small' then 'text-base'
+                                when 'medium' then 'text-lg'
+                                when 'large' then 'text-xl'
+                                end %>
+              <p class="<%= text_size %>">
+                <%= block.preferred_text %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

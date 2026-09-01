@@ -1,0 +1,57 @@
+uk:
+  spree:
+    admin:
+      page_builder:
+        image: Зображення
+        image_url_overrides_upload: Якщо задано обидва, посилання на зображення має пріоритет над завантаженим файлом.
+        youtube_shorts:
+          video_url: Посилання на YouTube Short
+          video_url_hint: Вставте посилання на YouTube Shorts (наприклад, https://www.youtube.com/shorts/VIDEO_ID)
+      product_import:
+        flash:
+          blank_url: Вкажіть посилання на Google-таблицю.
+          queued: Імпорт запущено у фоні. Результат надійде в Telegram.
+        telegram:
+          finished: "✅ Імпорт товарів завершено — %{summary}"
+          invalid: "⚠️ Імпорт товарів не виконано: %{message}"
+          failed: "❌ Імпорт товарів завершився помилкою: %{message}"
+          errors_heading: "Помилки:"
+        summary: "створено: %{created}, оновлено: %{updated}, пропущено: %{skipped}, помилок: %{errors}"
+        row_error: "Рядок %{row} (%{name}): %{message}"
+        errors:
+          invalid_url: Не схоже на посилання Google Sheets.
+          download_failed: Не вдалося завантажити таблицю (HTTP %{status}). Перевірте, що доступ відкрито «за посиланням».
+          not_public: Таблиця недоступна публічно. Відкрийте доступ «Перегляд за посиланням».
+        button: Імпорт із Google Sheets
+        view:
+          title: Імпорт товарів із Google Sheets
+          sheet_url_label: Посилання на Google-таблицю
+          sheet_url_hint: Таблиця має бути відкрита на перегляд «за посиланням». Імпорт виконується у фоні, результат надійде в Telegram.
+          columns_heading: Очікувані колонки
+          columns_intro: "(перший рядок — заголовки, регістр не важливий). Обовʼязкова лише name:"
+          columns:
+            name: назва товару (обовʼязково)
+            price: "ціна (якщо порожньо → 1)"
+            sku: "артикул, ключ для оновлення (якщо порожньо → згенерується)"
+            description: опис
+            image_url: "посилання на зображення (можна кілька через кому)"
+            video_url: посилання на відео
+            card_size: normal / wide / large
+            taxons: "категорії, напр. Categories > Food > Pizza; кілька шляхів через ; (створюються автоматично)"
+            properties: "властивості одним рядком: Ключ: Значення; Ключ2: Значення2"
+            property_x: "будь-яка колонка з таким заголовком задає властивість X (напр. property: Calories)"
+          matching_html: Товари зіставляються за <code>sku</code>, потім за <code>name</code> — наявні <strong>оновлюються</strong> (повторний імпорт за тим самим посиланням = оновлення).
+          submit: Запустити імпорт
+    page_sections:
+      youtube_shorts_slider:
+        heading_default: YouTube Shorts
+    products_sort_options:
+      relevance: Релевантність
+      manual: Вручну
+      best_selling: Найпопулярніші
+      name_a_z: За алфавітом, А-Я
+      name_z_a: За алфавітом, Я-А
+      newest_first: Найновіші
+      oldest_first: Найстаріші
+      price_low_to_high: Ціна (від низької до високої)
+      price_high_to_low: Ціна (від високої до низької)
