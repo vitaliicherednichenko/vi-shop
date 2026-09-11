@@ -79,11 +79,13 @@ Bulk-import and update products into `/admin/products` from a **public** Google 
 | `taxons` | Taxon path(s), e.g. `Categories > Food > Pizza`; multiple paths separated by `;` (aliases `taxonomies`, `category`) |
 | `properties` | Inline product properties: `Key: Value; Key2: Value2` |
 | `property: X` | Any column whose header starts with `property:` sets property *X* to the cell value |
+| `name:LOCALE`, `description:LOCALE` | Per-locale translations, e.g. `name:uk`, `name:ru`, `name:es`, `description:uk`. Bare `name`/`description` = default locale (`en`) |
 
 **Behaviour**
 * **Upsert & update** — rows are matched by `sku`, then by `name`. Existing products are updated, so re-importing an edited sheet updates the matching products. A product counts as *updated* only if something actually changed (attributes, store, a property, a taxon, or a newly attached image); unchanged products are not counted.
 * **Taxons** — the first path segment is the taxonomy name (auto-created with its root taxon); remaining segments are nested taxons, created if missing. A single-segment value goes under the `Categories` taxonomy. The `taxons` cell is **authoritative**: on re-import, taxons no longer listed are removed and a blank cell clears all taxons (if the column is absent from the sheet, taxons are left untouched).
 * **Images & video** — `image_url` values are stored in `public_metadata` (detail-page gallery) and the first image is also attached as a real `Spree::Image` for listing cards; `video_url` is stored in `public_metadata`. Both columns are **authoritative**: clearing the `image_url` cell removes the stored URL(s) and the imported product image, and clearing `video_url` removes the video (columns absent from the sheet are left untouched).
+* **Translations** — `name:LOCALE` / `description:LOCALE` columns are written as Spree/Mobility translations for that locale (the store already supports `en`, `uk`, `ru`, `es`). A present-but-blank locale cell clears that locale's value; matching/upsert still uses the default-locale `name`.
 * **New products** — on create the product decorator auto-generates a SKU, sets a default price/stock, and sends the usual new-product Telegram notification.
 
 ### 7. Deployment (Kamal → menu-spree.online)

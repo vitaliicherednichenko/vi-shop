@@ -21,6 +21,8 @@ class GoogleSheetProductImporter
   DEFAULT_TAXONOMY = "Categories"
   TAXON_KEYS = %i[taxons taxonomies category].freeze
   IMAGE_KEYS = %i[image_urls image_url].freeze
+  TRANSLATED_FIELDS = %w[name description].freeze
+  TRANSLATION_HEADER = /\A(#{TRANSLATED_FIELDS.join('|')}):([a-z]{2}(?:-[a-z]{2})?)\z/i
 
   def initialize(sheet_url, store: nil)
     @sheet_url = sheet_url.to_s.strip
@@ -95,7 +97,8 @@ class GoogleSheetProductImporter
     product ||= Spree::Product.new(name: name)
 
     apply_attributes(product, attrs)
-    attributes_changed = product.changed? || master_changed?(product)
+    translations_changed = apply_translations(product, attrs)
+    attributes_changed = product.changed? || master_changed?(product) || translations_changed
     product.save!
 
     store_changed = false
@@ -152,6 +155,27 @@ class GoogleSheetProductImporter
 
   def parse_price(value)
     value.to_s.gsub(/[^\d.,]/, "").tr(",", ".").to_f
+  end
+
+  def apply_translations(product, attrs)
+    changed = false
+    attrs.each do |key, value|
+      match = key.to_s.match(TRANSLATION_HEADER)
+      next unless match
+
+      changed = true if set_translation(product, match[1].downcase, match[2].downcase.to_sym, value)
+    end
+    changed
+  end
+
+  def set_translation(product, field, locale, value)
+    value = value.to_s.strip
+    Mobility.with_locale(locale) do
+      return false if product.public_send(field).to_s == value
+
+      product.public_send("#{field}=", value.presence)
+    end
+    true
   end
 
   def apply_properties(product, row, attrs)

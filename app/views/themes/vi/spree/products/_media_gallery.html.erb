@@ -28,7 +28,7 @@
               <% end %>
               <% if video_url.present? %>
                 <div class="swiper-slide !h-min cursor-pointer w-full">
-                  <div class="relative aspect-1 w-full flex items-center justify-center bg-black/90 overflow-hidden" id="thumb-desktop-product-video" data-turbo-permanent>
+                  <div class="relative aspect-1 w-full flex items-center justify-center bg-black/90 overflow-hidden" id="thumb-desktop-product-video-<%= product.id %>" data-turbo-permanent>
                     <% video_thumb = video_thumbnail_url(video_url) %>
                     <% if video_thumb %>
                       <%= image_tag video_thumb, alt: '', loading: :lazy, class: 'w-full h-full object-cover' %>
@@ -66,7 +66,7 @@
             <% end %>
             <% if video_url.present? %>
               <div class="swiper-slide w-full">
-                <div class="product-image relative w-full aspect-1 flex items-center justify-center bg-black" id="main-desktop-product-video" data-turbo-permanent>
+                <div class="product-image relative w-full aspect-1 flex items-center justify-center bg-black" id="main-desktop-product-video-<%= product.id %>" data-turbo-permanent>
                   <div class="w-full"><%= render 'spree/products/video', product: product %></div>
                 </div>
               </div>
@@ -101,7 +101,7 @@
             </div>
           <% end %>
           <% if video_url.present? %>
-            <div class="swiper-slide aspect-1 flex items-center justify-center bg-black" id="swiper-slide-video">
+            <div class="swiper-slide aspect-1 flex items-center justify-center bg-black" id="swiper-slide-video-<%= product.id %>">
               <div class="w-full"><%= render 'spree/products/video', product: product %></div>
             </div>
           <% end %>

@@ -48,6 +48,7 @@ en:
             taxons: "categories, e.g. Categories > Food > Pizza; several paths separated by ; (created automatically)"
             properties: "properties in one cell: Key: Value; Key2: Value2"
             property_x: "any column with this header sets property X (e.g. property: Calories)"
+            translations: "translated name/description per locale via a field:locale column (e.g. name:uk, name:ru, name:es, description:uk); bare name/description = default locale (en)"
           matching_html: Products are matched by <code>sku</code>, then by <code>name</code> — existing ones are <strong>updated</strong> (re-importing the same link = update).
           submit: Start import
     page_sections:

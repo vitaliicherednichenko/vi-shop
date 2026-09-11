@@ -1,0 +1,27 @@
+<%# Catalog/menu storefront (no cart): wishlist item without the "Add to cart" button. %>
+<div class='w-full flex justify-between flex-col' id="<%= dom_id(wished_item) %>">
+  <div class="relative">
+    <%= render 'spree/products/featured_image', object: wished_item.variant %>
+    <%= render 'spree/products/label', product: wished_item.product %>
+    <div class="absolute right-2 top-2 z-10">
+      <%= button_to spree.account_wishlist_wished_item_path(wished_item.variant_id), method: :delete, data: { turbo_confirm: 'Are you sure?' }, class: 'btn-icon', 'aria-label': Spree.t('storefront.wished_items.remove')  do %>
+        <%= render 'spree/shared/icons/delete' %>
+        <span class="sr-only"><%= Spree.t('storefront.wished_items.remove') %></span>
+      <% end %>
+    </div>
+  </div>
+  <div>
+    <div class='mt-4'>
+      <%= link_to wished_item.variant.name, spree_storefront_resource_url(wished_item.product, relative: true), class: 'uppercase font-medium', data: { 'turbo-frame': '_top' } %>
+    </div>
+    <%= render 'spree/products/price', product: wished_item.variant, use_variant: false, price_class: 'mt-1' %>
+    <div class='my-4'>
+      <% wished_item.variant.option_values.each do |option| %>
+        <div class='border-default border-t py-2 flex gap-1 uppercase tracking-widest text-sm !leading-4'>
+          <div class='min-w-[88px]'><%= option.option_type.presentation %>:</div>
+          <div><%= option.presentation %></div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

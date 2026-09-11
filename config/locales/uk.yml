@@ -40,6 +40,7 @@ uk:
             taxons: "категорії, напр. Categories > Food > Pizza; кілька шляхів через ; (створюються автоматично)"
             properties: "властивості одним рядком: Ключ: Значення; Ключ2: Значення2"
             property_x: "будь-яка колонка з таким заголовком задає властивість X (напр. property: Calories)"
+            translations: "переклад назви/опису за локаллю через колонку field:locale (напр. name:uk, name:ru, name:es, description:uk); name/description без суфікса = локаль за замовчуванням (en)"
           matching_html: Товари зіставляються за <code>sku</code>, потім за <code>name</code> — наявні <strong>оновлюються</strong> (повторний імпорт за тим самим посиланням = оновлення).
           submit: Запустити імпорт
     page_sections:
