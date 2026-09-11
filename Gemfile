@@ -24,7 +24,7 @@ gem 'deface'
 gem 'aws-sdk-s3', require: false
 
 # Spree gems
-spree_opts = '~> 5.1'
+spree_opts = '~> 5.2.0'
 gem "spree", spree_opts
 gem "spree_emails", spree_opts
 gem "spree_sample", spree_opts
@@ -35,6 +35,12 @@ gem "spree_stripe", '~> 1.2'
 gem "spree_google_analytics", "~> 1.0"
 gem "spree_klaviyo", "~> 1.0"
 gem "spree_paypal_checkout", "~> 0.5"
+
+gem "sprockets-rails"
+gem "tailwindcss-rails", "~> 3.3"
+gem "tailwindcss-ruby", "~> 3.4"
+gem "connection_pool", "~> 2.5"
+gem "sass-embedded", "~> 1.89.2"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri windows ]

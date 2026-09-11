@@ -45,7 +45,9 @@ class GoogleSheetProductImporter
       end
 
       begin
-        upsert_product(attrs, row, name, result)
+        I18n.with_locale(I18n.default_locale) do
+          upsert_product(attrs, row, name, result)
+        end
       rescue => e
         result.errors << Spree.t('admin.product_import.row_error', row: index + 2, name: name, message: e.message)
       end
