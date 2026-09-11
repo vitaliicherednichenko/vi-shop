@@ -16,6 +16,7 @@ Spree.config do |config|
   # Example:
   # Uncomment to stop tracking inventory levels in the application
   # config.track_inventory_levels = false
+  config.product_properties_enabled = true
 end
 
 # Background job queue names
@@ -53,6 +54,8 @@ end
 # uncomment lines below to add your own custom business logic
 # such as promotions, shipping methods, etc
 Rails.application.config.after_initialize do
+  Rails.application.config.spree_admin.products_actions_partials << 'spree/admin/products/import_google_sheets'
+
   Rails.application.config.spree.themes << Spree::Themes::Vi
 
   Rails.application.config.spree.page_blocks << Spree::PageBlocks::ImageGridBlock
