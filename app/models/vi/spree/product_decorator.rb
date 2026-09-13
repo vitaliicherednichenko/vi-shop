@@ -25,7 +25,9 @@ module Vi
       end
 
       def set_default_price
-        self.price = 1 if price.blank?
+        return if master.prices.any? { |p| p.price_list_id.nil? && p.amount.present? }
+
+        self.price = 1
       end
 
       def notify_new_product_on_telegram

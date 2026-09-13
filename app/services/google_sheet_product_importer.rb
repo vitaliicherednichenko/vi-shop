@@ -101,13 +101,9 @@ class GoogleSheetProductImporter
     apply_attributes(product, attrs)
     translations_changed = apply_translations(product, attrs)
     attributes_changed = product.changed? || master_changed?(product) || translations_changed
+    store_changed = product.store_id != @store.id
+    product.store = @store if store_changed
     product.save!
-
-    store_changed = false
-    unless product.stores.include?(@store)
-      @store.products << product
-      store_changed = true
-    end
 
     properties_changed = apply_properties(product, row, attrs)
     taxons_changed = apply_taxons(product, attrs)
@@ -267,19 +263,19 @@ class GoogleSheetProductImporter
     url = product.respond_to?(:public_image_url) ? product.public_image_url : attrs[:image_url]
 
     if url.blank?
-      return false if product.master.images.empty?
+      return false if product.media.empty?
 
-      product.master.images.destroy_all
+      product.media.destroy_all
       return true
     end
 
-    return false if product.master.images.any?
+    return false if product.media.any?
 
     response = connection.get(url)
     return false unless response.success?
 
     filename = File.basename(URI.parse(url).path).presence || "image.jpg"
-    image = product.master.images.new
+    image = product.media.new
     image.attachment.attach(io: StringIO.new(response.body), filename: filename)
     image.save
     true

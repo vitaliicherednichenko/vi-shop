@@ -5,8 +5,8 @@
       <%= render 'spree/products/breadcrumbs', product: product, taxons: product_breadcrumb_taxons(product) %>
       <div id="product-details-page" class="grid grid-cols-1 lg:grid-cols-12 gap-x-14">
         <div class="lg:hidden">
-          <% if product.brand %>
-            <%= link_to spree.nested_taxons_path(product.brand), title: product.brand_name do %>
+          <% if product.brand_taxon %>
+            <%= link_to spree.nested_taxons_path(product.brand_taxon), title: product.brand_name do %>
               <h3 class="text-sm lg:mt-0 inline-block mb-1">
                 <%= product.brand_name %>
               </h3>
@@ -45,8 +45,8 @@
         <div class="lg:col-span-5 lg:col-start-8">
           <div data-controller='sticky-button' data-product-form-target="productDetails">
             <div class="hidden lg:block">
-              <% if product.brand %>
-                <%= link_to spree.nested_taxons_path(product.brand), title: product.brand_name do %>
+              <% if product.brand_taxon %>
+                <%= link_to spree.nested_taxons_path(product.brand_taxon), title: product.brand_name do %>
                   <h3 class="text-sm mt-3 lg:mt-0 inline-block uppercase">
                     <%= product.brand_name %>
                   </h3>

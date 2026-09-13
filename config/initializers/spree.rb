@@ -61,6 +61,9 @@ Rails.application.config.after_initialize do
 
   Rails.application.config.spree.themes << Spree::Themes::Vi
 
+  Spree.permissions.assign(:default, [Spree::PermissionSets::DefaultCustomer])
+  Spree.permissions.assign(:admin, [Spree::PermissionSets::SuperUser])
+
   Rails.application.config.spree.page_blocks << Spree::PageBlocks::ImageGridBlock
   Rails.application.config.spree.page_blocks << Spree::PageBlocks::ImageCollectionSlider
   Rails.application.config.spree.page_blocks << Spree::PageBlocks::YoutubeShort
@@ -108,4 +111,8 @@ Spree.screenshot_api_token = ENV['SCREENSHOT_API_TOKEN'] if ENV['SCREENSHOT_API_
 
 Rails.application.config.to_prepare do
   require_dependency 'spree/authentication_helpers'
+
+  # Re-assigned on every reload so development picks up the reloaded Moderator class
+  Spree.permissions.clear(:moderator)
+  Spree.permissions.assign(:moderator, [Spree::PermissionSets::DefaultCustomer, Spree::PermissionSets::Moderator])
 end
