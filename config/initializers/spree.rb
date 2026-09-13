@@ -64,6 +64,16 @@ Rails.application.config.after_initialize do
   Spree.permissions.assign(:default, [Spree::PermissionSets::DefaultCustomer])
   Spree.permissions.assign(:admin, [Spree::PermissionSets::SuperUser])
 
+  %i[policies audits].each do |key|
+    item = Spree.admin.navigation.settings.find(key)
+    next unless item
+
+    original_condition = item.condition
+    Spree.admin.navigation.settings.update(key, condition: -> {
+      !restricted_moderator? && (original_condition.nil? || instance_exec(&original_condition))
+    })
+  end
+
   Rails.application.config.spree.page_blocks << Spree::PageBlocks::ImageGridBlock
   Rails.application.config.spree.page_blocks << Spree::PageBlocks::ImageCollectionSlider
   Rails.application.config.spree.page_blocks << Spree::PageBlocks::YoutubeShort

@@ -24,7 +24,7 @@ gem 'deface'
 gem 'aws-sdk-s3', require: false
 
 # Spree gems
-spree_opts = '~> 5.5.0'
+spree_opts = '~> 5.6.0'
 gem "spree", spree_opts
 gem "spree_emails", spree_opts
 gem "spree_admin", spree_opts
