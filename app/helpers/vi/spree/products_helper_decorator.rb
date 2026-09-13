@@ -1,7 +1,7 @@
 module Vi
   module Spree
     module ProductsHelperDecorator
-      HIDDEN_SORT_OPTIONS = %w[best-selling price-low-to-high price-high-to-low].freeze
+      HIDDEN_SORT_OPTIONS = %w[best-selling price-low-to-high price-high-to-low].freeze unless const_defined?(:HIDDEN_SORT_OPTIONS, false)
 
       def taxons_sort_options
         super.reject { |option| HIDDEN_SORT_OPTIONS.include?(option[:value]) }

@@ -26,6 +26,23 @@ module Spree
       end
     end
 
+    def vi_product_gallery_images(product, selected_variant:, variant_from_options:)
+      variant = selected_variant || variant_from_options
+      if variant && !variant.is_master? && variant.respond_to?(:gallery_media)
+        variant_media = gallery_image_assets(variant.gallery_media)
+        return variant_media if variant_media.any?
+      end
+
+      product_media = product.respond_to?(:gallery_media) ? gallery_image_assets(product.gallery_media) : []
+      return product_media if product_media.any?
+
+      product_media_gallery_images(product, selected_variant: selected_variant, variant_from_options: variant_from_options)
+    end
+
+    def gallery_image_assets(assets)
+      assets.to_a.select { |asset| asset.try(:media_type).in?([nil, 'image']) && asset.attachment.attached? }
+    end
+
     def video_thumbnail_url(url)
       return nil if url.blank?
 

@@ -8,6 +8,8 @@ Bundler.require(*Rails.groups)
 
 module SpreeStarter
   class Application < Rails::Application
+    Rails.autoloaders.main.ignore(Rails.root.join("app/**/*_decorator*.rb"))
+
     config.to_prepare do
       # Load application's model / class decorators
       Dir.glob(File.join(File.dirname(__FILE__), "../app/**/*_decorator*.rb")) do |c|

@@ -52,8 +52,7 @@ module Vi
                    .find { |candidate| ::Spree::Variant.where(sku: candidate).none? }
       end
 
-      # Controls how big the product card is in storefront listings.
-      CARD_SIZES = %w[normal wide large].freeze
+      CARD_SIZES = %w[normal wide large].freeze unless const_defined?(:CARD_SIZES, false)
 
       def card_size
         size = public_metadata&.dig('card_size').to_s

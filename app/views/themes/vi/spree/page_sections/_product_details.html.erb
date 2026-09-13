@@ -31,7 +31,7 @@
         </div>
 
         <div class="lg:col-span-7 relative">
-          <% images = product_media_gallery_images(product, selected_variant: @selected_variant, variant_from_options: @variant_from_options) %>
+          <% images = vi_product_gallery_images(product, selected_variant: @selected_variant, variant_from_options: @variant_from_options) %>
           <% gallery_images = images.presence || (product.respond_to?(:public_image_urls) ? product.public_image_urls : []) %>
 
           <div class="lg:hidden mb-6">
