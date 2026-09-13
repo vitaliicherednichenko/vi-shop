@@ -24,7 +24,7 @@ gem 'deface'
 gem 'aws-sdk-s3', require: false
 
 # Spree gems
-spree_opts = '~> 5.2.0'
+spree_opts = '~> 5.3.0'
 gem "spree", spree_opts
 gem "spree_emails", spree_opts
 gem "spree_sample", spree_opts
@@ -37,8 +37,8 @@ gem "spree_klaviyo", "~> 1.0"
 gem "spree_paypal_checkout", "~> 0.5"
 
 gem "sprockets-rails"
-gem "tailwindcss-rails", "~> 3.3"
-gem "tailwindcss-ruby", "~> 3.4"
+gem "tailwindcss-rails", "~> 4.0"
+gem "tailwindcss-ruby", "~> 4.0"
 gem "connection_pool", "~> 2.5"
 gem "sass-embedded", "~> 1.89.2"
 
@@ -55,6 +55,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'listen', '>= 3.0'
   gem "foreman"
   gem "web-console"
   gem "letter_opener"

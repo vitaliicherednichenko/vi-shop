@@ -1,11 +1,104 @@
- @import url("https://esm.sh/photoswipe@5.4.4/dist/photoswipe.css");
-@import url("https://esm.sh/swiper@11.2.2/swiper-bundle.min.css");
-@import url("https://esm.sh/flag-icons@7.3.2/css/flag-icons.min.css");
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/aspect-ratio";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-@tailwind forms;
+/* Link to JS config for content paths */
+@config '../../../config/tailwind.config.js';
+
+/* Tailwind v4 Base Layer - Set default border color */
+@layer base {
+  *, ::after, ::before, ::backdrop, ::file-selector-button {
+    border-color: var(--border-default-color, currentColor);
+  }
+}
+
+/* Tailwind v4 Theme Configuration */
+@theme {
+  /* Custom Colors */
+  --color-primary: var(--primary);
+  --color-accent: var(--accent);
+  --color-neutral: var(--neutral);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+
+  --color-accent-100: var(--accent-100);
+  --color-neutral-50: var(--neutral-50);
+  --color-neutral-100: var(--neutral-100);
+  --color-neutral-200: var(--neutral-200);
+  --color-neutral-300: var(--neutral-300);
+  --color-neutral-400: var(--neutral-400);
+  --color-neutral-500: var(--neutral-500);
+  --color-neutral-600: var(--neutral-600);
+  --color-neutral-700: var(--neutral-700);
+  --color-neutral-800: var(--neutral-800);
+  --color-neutral-900: var(--neutral-900);
+
+  --color-background: var(--background);
+  --color-section-background: var(--section-background, var(--background));
+  --color-text: var(--text);
+
+  --color-button: rgba(var(--button-rgb), <alpha-value>);
+  --color-button-text: var(--button-text);
+  --color-button-hover: var(--button-hover);
+  --color-button-hover-text: var(--button-hover-text);
+
+  --color-secondary-button: var(--secondary-button);
+  --color-secondary-button-text: var(--secondary-button-text);
+  --color-secondary-button-hover: var(--secondary-button-hover);
+  --color-secondary-button-hover-text: var(--secondary-button-hover-text);
+
+  --color-button-light: var(--button-light);
+  --color-button-light-text: var(--button-light-text);
+  --color-button-light-hover: var(--button-light-hover);
+  --color-button-light-hover-text: var(--button-light-hover-text);
+
+  --color-input: var(--input);
+  --color-input-bg: var(--input-bg);
+  --color-input-text: var(--input-text);
+  --color-input-focus: var(--input-focus);
+  --color-input-focus-bg: var(--input-focus-bg);
+  --color-input-focus-text: var(--input-focus-text);
+
+  /* Letter Spacing */
+  --letter-spacing-widest: 0.07rem;
+
+  /* Animations */
+  --animate-fadeIn: fadeIn 0.5s ease-in-out;
+
+  /* Typography - Prose Colors */
+  --prose-body: var(--text);
+  --prose-headings: var(--text);
+  --prose-bold: var(--text);
+  --prose-links: var(--text);
+  --prose-counters: var(--text);
+  --prose-bullets: var(--text);
+  --prose-lead: var(--text);
+  --prose-hr: var(--border-default-color);
+  --prose-th-borders: var(--border-default-color);
+  --prose-td-borders: var(--border-default-color);
+  --prose-quote-borders: var(--border-default-color);
+  --prose-quotes: var(--text);
+}
+
+/* Define fadeIn keyframes for animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Custom Variants */
+
+/* Variant for scrollbar rounded */
+@variant scrollbar {
+  &::-webkit-scrollbar {
+    @slot;
+  }
+}
 
 /*
   This is the storefront CSS
@@ -37,6 +130,10 @@
 
 html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body:not(.inside-page-builder) > div.section-header {
+  @apply sticky top-0 z-50;
 }
 
 .trix-content a {
@@ -79,7 +176,7 @@ html {
 }
 
 textarea.text-input {
-  height: auto;
+  height: auto !important;
   min-height: 3rem;
   border-radius: 0;
 }
@@ -164,10 +261,6 @@ textarea.text-input {
 }
 .menu-item:focus {
   outline: none;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  margin-left: -0.5rem;
-  margin-right: -0.5rem;
   border-radius: var(--button-border-radius);
 }
 
@@ -199,14 +292,8 @@ textarea.text-input {
   padding-bottom: 0.75rem;
   color: var(--button-text-color, var(--button-text));
   outline-offset: 0.5rem;
-  transition-property:
-    color,
-    background-color,
-    border-color,
-    text-decoration-color,
-    fill,
-    stroke,
-    -webkit-text-decoration-color;
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, -webkit-text-decoration-color;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -406,7 +493,7 @@ textarea.text-input {
   h4,
   h5,
   h6 {
-    @apply text-xl pb-1;
+    @apply pb-1 text-xl;
   }
 }
 
@@ -445,9 +532,6 @@ textarea.text-input {
   height: 0.25rem;
   margin: 0.6rem 0;
   background-color: var(--text);
-}
-
-a:hover {
 }
 
 .delivery-list-item:last-child {
@@ -517,6 +601,7 @@ a:hover {
 .badge,
 .badge-success,
 .badge-paid,
+.badge-balance_due,
 .badge-warning,
 .badge-canceled,
 .badge-failed,
@@ -526,6 +611,7 @@ a:hover {
 .badge-ready,
 .badge-partial,
 .badge-active,
+.badge-balance_due,
 .badge-inactive {
   margin-right: 0.25rem;
   display: inline-block;
@@ -542,6 +628,7 @@ a:hover {
 .badge:last-child,
 .badge-success:last-child,
 .badge-paid:last-child,
+.badge-balance_due:last-child,
 .badge-warning:last-child,
 .badge-canceled:last-child,
 .badge-failed:last-child,
@@ -549,6 +636,7 @@ a:hover {
 .badge-void:last-child,
 .badge-pending:last-child,
 .badge-ready:last-child,
+.badge-balance_due:last-child,
 .badge-partial:last-child {
   margin-right: 0px;
 }
@@ -561,11 +649,13 @@ a:hover {
 
 .badge-warning,
 .badge-canceled,
+.badge-balance_due,
 .badge-failed {
   background-color: #f8e7e5;
 }
 
 .badge,
+.badge-balance_due,
 .badge-refunded,
 .badge-pending,
 .badge-void,
@@ -1122,6 +1212,7 @@ html[aria-busy="true"] .hide-on-load {
   opacity: 1;
   transition: all 0.2s;
   visibility: visible;
+  margin-bottom: 1rem;
 }
 
 .st-accordion button {
@@ -1147,7 +1238,7 @@ html[aria-busy="true"] .hide-on-load {
   display: none;
 }
 
-#slideover-cart #cart_contents {
+#slideover-cart .cart-contents {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -1607,7 +1698,7 @@ html[aria-busy="true"] .hide-on-load {
 }
 
 /* PDP properties */
-.product-property {
+.product-property, .product-metafield {
   ul {
     list-style: disc;
     padding-left: 2rem;
@@ -1667,7 +1758,7 @@ html[aria-busy="true"] .hide-on-load {
   h4,
   h5,
   h6 {
-    @apply text-xl font-medium my-4;
+    @apply my-4 text-xl font-medium;
   }
 
   li {
@@ -1702,7 +1793,7 @@ html[aria-busy="true"] .hide-on-load {
   }
 
   .attachment__caption {
-    @apply text-center text-neutral-600 italic;
+    @apply italic text-center text-neutral-600;
   }
 }
 
@@ -1760,264 +1851,46 @@ body:has(.currency-and-locale-modal:not(.hidden)) .page-contents {
   }
 }
 
-/* Fullscreen banner entrance animations */
-.fullscreen-banner .image-banner--image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  animation: fsBannerKenBurns 14s ease-out both;
+/* Pagy pagination styles */
+.pagy.series-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-top: 4rem;
 }
 
-@keyframes fsBannerKenBurns {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1.12);
-  }
+.pagy.series-nav a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  text-align: center;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
 }
 
-.fullscreen-banner .image-banner--heading,
-.fullscreen-banner .image-banner--text,
-.fullscreen-banner .image-banner--buttons {
-  opacity: 0;
-  animation: fsBannerFadeUp 0.8s ease-out forwards;
-}
-
-.fullscreen-banner .image-banner--heading {
-  animation-delay: 0.2s;
-}
-
-.fullscreen-banner .image-banner--text {
-  animation-delay: 0.45s;
-}
-
-.fullscreen-banner .image-banner--buttons {
-  animation-delay: 0.7s;
-}
-
-@keyframes fsBannerFadeUp {
-  0% {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .fullscreen-banner .image-banner--image-wrapper img,
-  .fullscreen-banner .image-banner--heading,
-  .fullscreen-banner .image-banner--text,
-  .fullscreen-banner .image-banner--buttons {
-    animation: none;
-    opacity: 1;
-  }
-}
-
-/* Image grid fullscreen slider entrance animations (active slide only) */
-.image-grid-slider .image-grid-slider--image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.image-grid-slider .swiper-slide-active .image-grid-slider--image-wrapper img {
-  animation: igsKenBurns 8s ease-out both;
-}
-
-.image-grid-slider .image-grid-slider--title,
-.image-grid-slider .image-grid-slider--text,
-.image-grid-slider .image-grid-slider--button {
-  opacity: 0;
-}
-
-.image-grid-slider .swiper-slide-active .image-grid-slider--title,
-.image-grid-slider .swiper-slide-active .image-grid-slider--text,
-.image-grid-slider .swiper-slide-active .image-grid-slider--button {
-  animation: igsFadeUp 0.8s ease-out forwards;
-}
-
-.image-grid-slider .swiper-slide-active .image-grid-slider--title {
-  animation-delay: 0.2s;
-}
-
-.image-grid-slider .swiper-slide-active .image-grid-slider--text {
-  animation-delay: 0.4s;
-}
-
-.image-grid-slider .swiper-slide-active .image-grid-slider--button {
-  animation-delay: 0.6s;
-}
-
-@keyframes igsKenBurns {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1.1);
-  }
-}
-
-@keyframes igsFadeUp {
-  0% {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .image-grid-slider .swiper-slide-active .image-grid-slider--image-wrapper img,
-  .image-grid-slider .image-grid-slider--title,
-  .image-grid-slider .image-grid-slider--text,
-  .image-grid-slider .image-grid-slider--button {
-    animation: none;
-    opacity: 1;
-  }
-}
-
-/* ── Otherworldly / cosmic theme ───────────────────────────────────────── */
-.image-grid-slider--cosmic {
-  background: radial-gradient(120% 100% at 50% 0%, #1b1140 0%, #0a0a1f 45%, #04040d 100%);
-}
-
-/* Nebula glow drifting over the image */
-.image-grid-slider--cosmic .image-grid-slider__nebula {
-  background:
-    radial-gradient(40% 50% at 18% 30%, rgba(124, 58, 237, 0.55), transparent 70%),
-    radial-gradient(45% 55% at 82% 70%, rgba(56, 189, 248, 0.45), transparent 72%),
-    radial-gradient(35% 45% at 60% 20%, rgba(236, 72, 153, 0.35), transparent 70%);
-  mix-blend-mode: screen;
-  opacity: 0.55;
-  animation: igsNebula 24s ease-in-out infinite alternate;
-  pointer-events: none;
-}
-
-/* Twinkling starfields (two parallax layers) */
-.image-grid-slider--cosmic .image-grid-slider__stars {
-  background-image:
-    radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, transparent),
-    radial-gradient(1.5px 1.5px at 140px 80px, rgba(255, 255, 255, 0.9), transparent),
-    radial-gradient(1px 1px at 70px 160px, #ffffff, transparent),
-    radial-gradient(1px 1px at 200px 120px, rgba(199, 210, 254, 0.9), transparent),
-    radial-gradient(1.5px 1.5px at 250px 40px, #ffffff, transparent);
-  background-repeat: repeat;
-  background-size: 280px 280px;
-  mix-blend-mode: screen;
-  opacity: 0.7;
-  animation: igsTwinkle 5s ease-in-out infinite, igsDrift 90s linear infinite;
-  pointer-events: none;
-}
-
-.image-grid-slider--cosmic .image-grid-slider__stars--far {
-  background-size: 180px 180px;
-  opacity: 0.4;
-  animation: igsTwinkle 7s ease-in-out infinite 1s, igsDrift 160s linear infinite;
-}
-
-/* Depth vignette */
-.image-grid-slider--cosmic .image-grid-slider__vignette {
-  background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(2, 2, 12, 0.75) 100%);
-  pointer-events: none;
-}
-
-/* Glowing title */
-.image-grid-slider--cosmic .image-grid-slider--title {
-  text-shadow:
-    0 0 18px rgba(129, 140, 248, 0.65),
-    0 0 40px rgba(56, 189, 248, 0.35);
-  letter-spacing: 0.02em;
-}
-
-/* Slide counter (01 / 05) + rotating planet orb */
-.image-grid-slider--cosmic .image-grid-slider__counter {
-  position: static;
+.pagy.series-nav a[rel="prev"],
+.pagy.series-nav a[rel="next"] {
   width: auto;
-  color: #fff;
-  font-size: 0.95rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-shadow: 0 0 12px rgba(129, 140, 248, 0.6);
-}
-.image-grid-slider--cosmic .image-grid-slider__counter .swiper-pagination-current {
-  color: #fff;
-  font-size: 1.5rem;
-}
-.image-grid-slider--cosmic .image-grid-slider__counter .swiper-pagination-total {
-  opacity: 0.65;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
-.image-grid-slider--cosmic .image-grid-slider__orb {
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 9999px;
-  background:
-    radial-gradient(circle at 32% 30%, #c4b5fd, #7c3aed 45%, #2e1065 100%);
-  box-shadow:
-    0 0 18px rgba(124, 58, 237, 0.8),
-    inset -6px -6px 12px rgba(0, 0, 0, 0.55);
-  background-size: 180% 180%;
-  animation: igsOrbSpin 18s linear infinite, igsOrbFloat 6s ease-in-out infinite;
-  flex: none;
+.pagy.series-nav a[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: default;
 }
 
-@keyframes igsNebula {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-    opacity: 0.45;
-  }
-  100% {
-    transform: translate3d(-2%, 2%, 0) scale(1.08);
-    opacity: 0.65;
-  }
+.pagy.series-nav a[aria-current="page"] {
+  font-weight: 600;
+  text-decoration: underline;
 }
 
-@keyframes igsTwinkle {
-  0%, 100% {
-    opacity: 0.35;
-  }
-  50% {
-    opacity: 0.8;
-  }
+.pagy.series-nav a:not([aria-disabled="true"]):hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
-@keyframes igsDrift {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 280px 560px;
-  }
-}
-
-@keyframes igsOrbSpin {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 360% 50%;
-  }
-}
-
-@keyframes igsOrbFloat {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .image-grid-slider--cosmic .image-grid-slider__nebula,
-  .image-grid-slider--cosmic .image-grid-slider__stars,
-  .image-grid-slider--cosmic .image-grid-slider__orb {
-    animation: none;
-  }
+.pagy.series-nav a[role="separator"] {
+  width: 2rem;
 }
