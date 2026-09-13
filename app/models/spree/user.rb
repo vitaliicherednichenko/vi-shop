@@ -6,6 +6,7 @@ class Spree::User < ApplicationRecord
 
   # Spree modules
   include Spree::UserAddress
+  include Spree::AdminUserMethods
   include Spree::UserMethods
   include Spree::UserPaymentSource
 end

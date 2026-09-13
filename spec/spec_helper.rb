@@ -43,9 +43,6 @@ require 'spree/testing_support/store'
 require 'spree/api/testing_support/matchers/webhooks'
 require 'spree/api/testing_support/factories'
 require 'jsonapi/rspec'
-require 'spree/api/testing_support/v2/current_order'
-require 'spree/api/testing_support/v2/platform_contexts'
-require 'spree/api/testing_support/v2/serializers_params'
 
 require 'spree/admin/testing_support/capybara_utils'
 

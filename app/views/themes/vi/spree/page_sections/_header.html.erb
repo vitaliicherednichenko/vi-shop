@@ -81,10 +81,8 @@
           <% if should_render_currency_dropdown? || should_render_locale_dropdown? %>
             <div
             data-controller="modal"
-            data-modal-allow-background-close="true"
-            data-modal-
-            class="hidden lg:flex"
-            data-modal-backdrop-color-value="rgba(0,0,0,0.32)">
+            data-modal-disable-backdrop="true"
+            class="hidden lg:flex">
               <%= button_tag class: 'flex gap-2 items-center', data: {action: 'modal#open'} do %>
                 <% if should_render_currency_dropdown? %>
                   <span>

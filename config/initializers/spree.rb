@@ -55,6 +55,9 @@ end
 # such as promotions, shipping methods, etc
 Rails.application.config.after_initialize do
   Rails.application.config.spree_admin.products_actions_partials << 'spree/admin/products/import_google_sheets'
+  Spree.admin.tables.products.update :name,
+                                     sort_scope_asc: :ascend_by_translated_name,
+                                     sort_scope_desc: :descend_by_translated_name
 
   Rails.application.config.spree.themes << Spree::Themes::Vi
 
@@ -98,8 +101,7 @@ Rails.application.config.after_initialize do
 end
 
 Spree.user_class = 'Spree::User'
-# Use a different class for admin users
-# Spree.admin_user_class = 'AdminUser'
+Spree.admin_user_class = 'Spree::User'
 
 Spree.google_places_api_key = ENV['GOOGLE_PLACES_API_KEY'] if ENV['GOOGLE_PLACES_API_KEY'].present?
 Spree.screenshot_api_token = ENV['SCREENSHOT_API_TOKEN'] if ENV['SCREENSHOT_API_TOKEN'].present?

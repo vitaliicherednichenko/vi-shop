@@ -6,6 +6,22 @@ module Vi
         base.before_validation :set_default_price, on: :create
         base.after_create :set_default_shop_stock
         base.after_create_commit :notify_new_product_on_telegram
+
+        base.scope :ascend_by_translated_name, -> { ProductDecorator.order_by_translated_name(self, :asc) }
+        base.scope :descend_by_translated_name, -> { ProductDecorator.order_by_translated_name(self, :desc) }
+      end
+
+      def self.order_by_translated_name(relation, direction)
+        products = ::Spree::Product.quoted_table_name
+        translations = ::Spree::Product::Translation.quoted_table_name
+        locale = relation.connection.quote(Mobility.locale.to_s)
+        sort_name = Arel.sql("COALESCE(vi_name_sort.name, #{products}.name)")
+
+        relation.
+          joins("LEFT OUTER JOIN #{translations} vi_name_sort ON vi_name_sort.spree_product_id = #{products}.id AND vi_name_sort.locale = #{locale}").
+          select("#{products}.*").
+          select(Arel::Nodes::As.new(sort_name, Arel.sql('vi_sort_name'))).
+          order(direction == :desc ? sort_name.desc : sort_name.asc)
       end
 
       def set_default_price

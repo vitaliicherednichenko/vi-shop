@@ -17,7 +17,8 @@ module Spree
 
       cannot :manage, Spree::Promotion
       cannot :manage, Spree::Report
-      cannot :manage, Spree::CustomDomain
+      # Spree::CustomDomain was removed from core in Spree 5.4
+      cannot :manage, Spree::CustomDomain if defined?(Spree::CustomDomain)
       cannot :manage, Spree::PaymentMethod
       cannot :manage, Spree::Zone
       cannot :manage, Spree::ShippingMethod
